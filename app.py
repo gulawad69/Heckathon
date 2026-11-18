@@ -23,7 +23,29 @@ from plugins.base import LOCKED
 from tools.jobs import Jobs
 import subprocess, urllib.request
 
-st.set_page_config(page_title="Pharma Agent Workbench", layout="wide")
+st.set_page_config(page_title="Pharma Agent Workbench", page_icon="💊", layout="wide", initial_sidebar_state="expanded")
+
+# Presentation only: styling. No behaviour depends on this block.
+st.markdown("""
+<style>
+.block-container {padding-top: 1.6rem; max-width: 1500px;}
+.hero {background: linear-gradient(120deg,#0f766e 0%,#0e7490 55%,#1d4ed8 100%); color:#fff; padding:1.1rem 1.4rem;
+       border-radius:14px; margin-bottom:1rem; box-shadow:0 4px 14px rgba(0,0,0,.15);}
+.hero h1 {margin:0; font-size:1.65rem; font-weight:700; color:#fff; padding:0;}
+.hero p {margin:.25rem 0 0 0; opacity:.92; font-size:.95rem;}
+.chip {display:inline-block; padding:.12rem .6rem; border-radius:999px; font-size:.78rem; font-weight:600; margin:.1rem .25rem .1rem 0;}
+.chip.ok {background:#d1fae5; color:#065f46;} .chip.bad {background:#fee2e2; color:#991b1b;}
+.chip.warn {background:#fef3c7; color:#92400e;} .chip.info {background:#e0f2fe; color:#075985;}
+div[data-testid="stMetric"] {background: rgba(128,128,128,.08); border:1px solid rgba(128,128,128,.22); padding:.7rem .9rem; border-radius:12px;}
+button[data-baseweb="tab"] {font-weight:600; padding:.55rem .9rem;}
+h2, h3 {margin-top:.6rem !important;}
+div[data-testid="stExpander"] {border-radius:10px;}
+section[data-testid="stSidebar"] .stAlert {font-size:.82rem;}
+</style>
+""", unsafe_allow_html=True)
+
+
+def chip(text, kind="info"): return f'<span class="chip {kind}">{text}</span>'
 
 
 @st.cache_resource
@@ -51,7 +73,8 @@ J = jobs()
 def run(coro, timeout=120): return asyncio.run_coroutine_threadsafe(coro, LOOP).result(timeout)
 TENANTS = sorted(p.name for p in VAULT.iterdir() if p.is_dir())
 
-st.sidebar.title("Pharma Formulary Agent")
+st.sidebar.title("💊 Pharma Formulary Agent")
+st.sidebar.markdown("**Session**")
 tenant = st.sidebar.selectbox("Tenant", TENANTS)
 user = st.sidebar.text_input("User id", "demo_user")
 approver = {"tenant_pharma_a": "pharm1", "tenant_pharma_b": "pharmB"}.get(tenant, "pharm1")
@@ -61,8 +84,12 @@ if ov:
     st.sidebar.warning(f"LOCAL CPU PROFILE active - budgets overridden: {ov}. Latency KPIs are not certifiable here.")
 st.sidebar.info("Demo vault content is synthetic. Not medical advice. Replace with pharmacist-approved monographs.")
 
-tabs = st.tabs(["1 Architecture & Workflow", "2 3-Stage Hybrid RAG Lab", "3 MCP & Plugin Inspector", "4 Memory & Graphify Tokens",
-                "5 Red Team & Circuit Breaker", "6 36-KPI Scorecard & 50K Load"])
+st.markdown(f'''<div class="hero"><h1>Pharma Agent Workbench</h1>
+<p>Live developer console for the tenant-isolated formulary agent: triage, hybrid RAG, MCP, memory, red-team and KPI scorecard.</p>
+{chip(f"tenant: {tenant}", "info")}{chip(f"user: {user}", "info")}{chip("LOCAL CPU PROFILE", "warn") if ov else chip("DESIGN PROFILE", "ok")}</div>''', unsafe_allow_html=True)
+
+tabs = st.tabs(["🏗️ Architecture & Workflow", "🔎 Hybrid RAG Lab", "🔌 MCP & Plugins", "🧠 Memory & Graphify",
+                "🛡️ Red Team & Breaker", "📊 KPI Scorecard & Load"])
 
 # ------------------------------------------------------------------ Tab 1
 with tabs[0]:
@@ -73,10 +100,11 @@ with tabs[0]:
                   "mcp_config.json": Path("mcp_config.json").exists(), "3 MCP servers": all(Path(f"mcp_servers/{n}").exists() for n in ("rag_server.py", "graphify_server.py", "state_server.py")),
                   "Signed manifests": Path("mcp_servers/manifests.json").exists(), "Golden 250 / Red team 100": Path("evals/golden_250.jsonl").exists() and Path("evals/redteam_100.jsonl").exists(),
                   "k6 + JMeter plans": Path("load_tests/k6_50k_load.js").exists() and Path("load_tests/jmeter_50k_plan.jmx").exists()}
-        for k, v in checks.items(): st.checkbox(k, v, disabled=True)
+        st.progress(sum(checks.values()) / len(checks), text=f"{sum(checks.values())}/{len(checks)} contract items present")
+        st.markdown("".join(chip(("✓ " if v else "✗ ") + k, "ok" if v else "bad") for k, v in checks.items()), unsafe_allow_html=True)
         st.subheader("Live triage routing console")
         q = st.text_input("Ask the agent", "What OTC options are listed for headache in adults?")
-        if st.button("Send", type="primary"):
+        if st.button("Send", type="primary", width="stretch"):
             o = run(SVC.handle(QueryIn(tenant_id=tenant, user_id=user, query=q)))
             run(SVC.drain())
             stt = SVC.last_states[-1] if SVC.last_states else None
@@ -88,7 +116,10 @@ with tabs[0]:
             if o.remediation: st.info(o.remediation)
             if o.citations: st.caption("Citations: " + ", ".join(o.citations))
             if stt and stt.triage:
-                t = stt.triage; st.json({"route": t.route, "intent": t.intent, "domain": t.domain, "risk_tier": t.risk_tier, "complexity": t.complexity})
+                t = stt.triage
+                m = st.columns(5)
+                for mc, (lbl, val) in zip(m, [("Route", t.route), ("Intent", t.intent), ("Domain", t.domain), ("Risk tier", t.risk_tier), ("Complexity", t.complexity)]):
+                    mc.metric(lbl, str(val))
             st.subheader("ReAct step-by-step trace")
             for i, s in enumerate(stt.steps if stt else [], 1):
                 with st.expander(f"{i}. {s['state']} - {s['action']} ({s['ms']} ms)"): st.json(s)
