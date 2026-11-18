@@ -1,0 +1,722 @@
+{
+ "_code": {
+  "agent.models.Base": {
+   "id": "agent.models.Base",
+   "kind": "pydantic_schema",
+   "fields": [],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.models.CallContext": {
+   "id": "agent.models.CallContext",
+   "kind": "pydantic_schema",
+   "fields": [
+    "tenant_id",
+    "user_id",
+    "session_id",
+    "idempotency_key",
+    "traceparent",
+    "tier"
+   ],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.models.HybridRetrieveIn": {
+   "id": "agent.models.HybridRetrieveIn",
+   "kind": "pydantic_schema",
+   "fields": [
+    "ctx",
+    "query",
+    "bm25_top_k",
+    "dense_top_k",
+    "rrf_k",
+    "fusion_pool",
+    "rerank_k",
+    "score_threshold"
+   ],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.models.Chunk": {
+   "id": "agent.models.Chunk",
+   "kind": "pydantic_schema",
+   "fields": [
+    "chunk_id",
+    "chunk_hash",
+    "text",
+    "source_uri",
+    "bm25",
+    "cosine",
+    "rrf_rank",
+    "rerank"
+   ],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.models.HybridRetrieveOut": {
+   "id": "agent.models.HybridRetrieveOut",
+   "kind": "pydantic_schema",
+   "fields": [
+    "chunks",
+    "top_score",
+    "abstain",
+    "stage_ms",
+    "early_abstain",
+    "degraded",
+    "index_version",
+    "index_stale",
+    "naive_dump_tokens"
+   ],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.models.ResolveSubgraphIn": {
+   "id": "agent.models.ResolveSubgraphIn",
+   "kind": "pydantic_schema",
+   "fields": [
+    "ctx",
+    "query",
+    "anchor_hint",
+    "depth",
+    "max_tokens"
+   ],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.models.GraphNode": {
+   "id": "agent.models.GraphNode",
+   "kind": "pydantic_schema",
+   "fields": [
+    "id",
+    "domain",
+    "risk_tier",
+    "version",
+    "text"
+   ],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.models.ResolveSubgraphOut": {
+   "id": "agent.models.ResolveSubgraphOut",
+   "kind": "pydantic_schema",
+   "fields": [
+    "anchor_id",
+    "nodes",
+    "edges",
+    "token_estimate"
+   ],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.models.CacheGetIn": {
+   "id": "agent.models.CacheGetIn",
+   "kind": "pydantic_schema",
+   "fields": [
+    "ctx",
+    "key_hash"
+   ],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.models.CachePutIn": {
+   "id": "agent.models.CachePutIn",
+   "kind": "pydantic_schema",
+   "fields": [
+    "ctx",
+    "key_hash",
+    "value",
+    "ttl_s"
+   ],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.models.SessionFactsGetIn": {
+   "id": "agent.models.SessionFactsGetIn",
+   "kind": "pydantic_schema",
+   "fields": [
+    "ctx",
+    "limit"
+   ],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.models.SessionFactsPutIn": {
+   "id": "agent.models.SessionFactsPutIn",
+   "kind": "pydantic_schema",
+   "fields": [
+    "ctx",
+    "text",
+    "evidence_chunk_ids"
+   ],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.models.AuditEvent": {
+   "id": "agent.models.AuditEvent",
+   "kind": "pydantic_schema",
+   "fields": [
+    "kind",
+    "detail"
+   ],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.models.AuditAppendIn": {
+   "id": "agent.models.AuditAppendIn",
+   "kind": "pydantic_schema",
+   "fields": [
+    "ctx",
+    "event"
+   ],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.models.WorkflowTransitionIn": {
+   "id": "agent.models.WorkflowTransitionIn",
+   "kind": "pydantic_schema",
+   "fields": [
+    "ctx",
+    "lot",
+    "from_state",
+    "to_state",
+    "reason"
+   ],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.models.ApprovalDecideIn": {
+   "id": "agent.models.ApprovalDecideIn",
+   "kind": "pydantic_schema",
+   "fields": [
+    "ctx",
+    "approval_id",
+    "decision",
+    "comment"
+   ],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.models.QueryIn": {
+   "id": "agent.models.QueryIn",
+   "kind": "pydantic_schema",
+   "fields": [
+    "tenant_id",
+    "user_id",
+    "query",
+    "session_id"
+   ],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.models.QueryOut": {
+   "id": "agent.models.QueryOut",
+   "kind": "pydantic_schema",
+   "fields": [
+    "tenant_id",
+    "session_id",
+    "trace_id",
+    "status",
+    "answer",
+    "citations",
+    "faithfulness",
+    "approval_id",
+    "remediation"
+   ],
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.__init__": {
+   "id": "agent.__init__",
+   "kind": "module",
+   "path": "agent/__init__.py",
+   "links": []
+  },
+  "agent.api": {
+   "id": "agent.api",
+   "kind": "module",
+   "path": "agent/api.py",
+   "links": [
+    "agent",
+    "agent.models",
+    "agent.service",
+    "agent.telemetry"
+   ]
+  },
+  "agent.config": {
+   "id": "agent.config",
+   "kind": "module",
+   "path": "agent/config.py",
+   "links": []
+  },
+  "agent.errors": {
+   "id": "agent.errors",
+   "kind": "module",
+   "path": "agent/errors.py",
+   "links": []
+  },
+  "agent.harness": {
+   "id": "agent.harness",
+   "kind": "module",
+   "path": "agent/harness.py",
+   "links": [
+    "agent",
+    "agent.config",
+    "agent.mcp_host",
+    "agent.models",
+    "agent.telemetry",
+    "plugins.circuit_breaker"
+   ]
+  },
+  "agent.lab": {
+   "id": "agent.lab",
+   "kind": "module",
+   "path": "agent/lab.py",
+   "links": [
+    "mcp_servers.rag_server"
+   ]
+  },
+  "agent.llm": {
+   "id": "agent.llm",
+   "kind": "module",
+   "path": "agent/llm.py",
+   "links": [
+    "agent.memory",
+    "agent.models",
+    "agent.triage"
+   ]
+  },
+  "agent.loop": {
+   "id": "agent.loop",
+   "kind": "module",
+   "path": "agent/loop.py",
+   "links": [
+    "agent",
+    "agent.config",
+    "agent.harness",
+    "agent.memory",
+    "agent.subagents.execution",
+    "agent.subagents.retrieval",
+    "agent.subagents.verification",
+    "agent.telemetry",
+    "agent.triage"
+   ]
+  },
+  "agent.mcp_host": {
+   "id": "agent.mcp_host",
+   "kind": "module",
+   "path": "agent/mcp_host.py",
+   "links": [
+    "agent",
+    "agent.telemetry"
+   ]
+  },
+  "agent.memory": {
+   "id": "agent.memory",
+   "kind": "module",
+   "path": "agent/memory.py",
+   "links": [
+    "agent.harness"
+   ]
+  },
+  "agent.models": {
+   "id": "agent.models",
+   "kind": "module",
+   "path": "agent/models.py",
+   "links": []
+  },
+  "agent.scorecard": {
+   "id": "agent.scorecard",
+   "kind": "module",
+   "path": "agent/scorecard.py",
+   "links": []
+  },
+  "agent.service": {
+   "id": "agent.service",
+   "kind": "module",
+   "path": "agent/service.py",
+   "links": [
+    "agent",
+    "agent.config",
+    "agent.harness",
+    "agent.loop",
+    "agent.mcp_host",
+    "agent.memory",
+    "agent.models",
+    "agent.telemetry",
+    "mcp_servers.graphify_server",
+    "mcp_servers.rag_server",
+    "mcp_servers.state_server",
+    "plugins",
+    "plugins.base"
+   ]
+  },
+  "agent.subagents.__init__": {
+   "id": "agent.subagents.__init__",
+   "kind": "module",
+   "path": "agent/subagents/__init__.py",
+   "links": []
+  },
+  "agent.subagents.execution": {
+   "id": "agent.subagents.execution",
+   "kind": "module",
+   "path": "agent/subagents/execution.py",
+   "links": [
+    "agent",
+    "agent.memory"
+   ]
+  },
+  "agent.subagents.retrieval": {
+   "id": "agent.subagents.retrieval",
+   "kind": "module",
+   "path": "agent/subagents/retrieval.py",
+   "links": [
+    "agent",
+    "agent.models",
+    "plugins.injection_shield"
+   ]
+  },
+  "agent.subagents.verification": {
+   "id": "agent.subagents.verification",
+   "kind": "module",
+   "path": "agent/subagents/verification.py",
+   "links": [
+    "agent.models"
+   ]
+  },
+  "agent.telemetry": {
+   "id": "agent.telemetry",
+   "kind": "module",
+   "path": "agent/telemetry.py",
+   "links": []
+  },
+  "agent.triage": {
+   "id": "agent.triage",
+   "kind": "module",
+   "path": "agent/triage.py",
+   "links": []
+  },
+  "mcp_servers.__init__": {
+   "id": "mcp_servers.__init__",
+   "kind": "module",
+   "path": "mcp_servers/__init__.py",
+   "links": []
+  },
+  "mcp_servers.base": {
+   "id": "mcp_servers.base",
+   "kind": "module",
+   "path": "mcp_servers/base.py",
+   "links": [
+    "agent",
+    "agent.models"
+   ]
+  },
+  "mcp_servers.graphify_server": {
+   "id": "mcp_servers.graphify_server",
+   "kind": "module",
+   "path": "mcp_servers/graphify_server.py",
+   "links": [
+    "agent",
+    "agent.models",
+    "mcp_servers.base",
+    "mcp_servers.rag_server"
+   ]
+  },
+  "mcp_servers.rag_server": {
+   "id": "mcp_servers.rag_server",
+   "kind": "module",
+   "path": "mcp_servers/rag_server.py",
+   "links": [
+    "agent",
+    "agent.models",
+    "agent.telemetry",
+    "mcp_servers.base"
+   ]
+  },
+  "mcp_servers.state_server": {
+   "id": "mcp_servers.state_server",
+   "kind": "module",
+   "path": "mcp_servers/state_server.py",
+   "links": [
+    "agent",
+    "agent.models",
+    "mcp_servers.base"
+   ]
+  },
+  "plugins.__init__": {
+   "id": "plugins.__init__",
+   "kind": "module",
+   "path": "plugins/__init__.py",
+   "links": []
+  },
+  "plugins.base": {
+   "id": "plugins.base",
+   "kind": "module",
+   "path": "plugins/base.py",
+   "links": [
+    "agent"
+   ]
+  },
+  "plugins.circuit_breaker": {
+   "id": "plugins.circuit_breaker",
+   "kind": "module",
+   "path": "plugins/circuit_breaker.py",
+   "links": [
+    "plugins.base"
+   ]
+  },
+  "plugins.injection_shield": {
+   "id": "plugins.injection_shield",
+   "kind": "module",
+   "path": "plugins/injection_shield.py",
+   "links": [
+    "plugins.base",
+    "plugins.pii_redactor"
+   ]
+  },
+  "plugins.otel_exporter": {
+   "id": "plugins.otel_exporter",
+   "kind": "module",
+   "path": "plugins/otel_exporter.py",
+   "links": [
+    "agent.telemetry",
+    "plugins.base"
+   ]
+  },
+  "plugins.pii_redactor": {
+   "id": "plugins.pii_redactor",
+   "kind": "module",
+   "path": "plugins/pii_redactor.py",
+   "links": [
+    "plugins.base"
+   ]
+  },
+  "plugins.ragas_auditor": {
+   "id": "plugins.ragas_auditor",
+   "kind": "module",
+   "path": "plugins/ragas_auditor.py",
+   "links": [
+    "agent.memory",
+    "agent.telemetry",
+    "plugins.base"
+   ]
+  }
+ },
+ "tenants": {
+  "tenant_pharma_a": {
+   "FORM-CETIRIZINE": {
+    "id": "FORM-CETIRIZINE",
+    "domain": "formulary",
+    "risk_tier": 1,
+    "version": "1.0.0",
+    "text": "# Cetirizine 10 mg tablets\n\nCetirizine is a listed over-the-counter second-generation antihistamine for hay fever, allergic rhinitis and mild allergic skin itching in adults. Usual adult dose is 10 mg once daily. It may cause drowsiness in some people, so caution is advised when driving. See [[POLICY-ESCALATION]], [[SAFETY-PEDIATRIC]].",
+    "links": [
+     "POLICY-ESCALATION",
+     "SAFETY-PEDIATRIC"
+    ],
+    "kind": "policy_note"
+   },
+   "FORM-IBUPROFEN": {
+    "id": "FORM-IBUPROFEN",
+    "domain": "formulary",
+    "risk_tier": 1,
+    "version": "1.0.0",
+    "text": "# Ibuprofen 200 mg tablets\n\nIbuprofen is a listed over-the-counter NSAID for mild to moderate pain with inflammation, such as headache, dental pain, period pain or muscle ache, and for fever in adults. Usual adult dose is 200 mg to 400 mg every 6 to 8 hours with food, up to 1200 mg in 24 hours for self-treatment. Do not use with a history of stomach ulcer or bleeding, severe kidney impairment, or asthma triggered by NSAIDs. Avoid in the third trimester of pregnancy. See [[SAFETY-NSAID-INTERACTIONS]], [[SAFETY-PREGNANCY]], [[POLICY-ESCALATION]].",
+    "links": [
+     "SAFETY-NSAID-INTERACTIONS",
+     "SAFETY-PREGNANCY",
+     "POLICY-ESCALATION"
+    ],
+    "kind": "policy_note"
+   },
+   "FORM-LORATADINE": {
+    "id": "FORM-LORATADINE",
+    "domain": "formulary",
+    "risk_tier": 1,
+    "version": "1.0.0",
+    "text": "# Loratadine 10 mg tablets\n\nLoratadine is a listed over-the-counter non-drowsy antihistamine for hay fever and allergic rhinitis symptoms such as sneezing and runny nose in adults. Usual adult dose is 10 mg once daily. See [[POLICY-ESCALATION]].",
+    "links": [
+     "POLICY-ESCALATION"
+    ],
+    "kind": "policy_note"
+   },
+   "FORM-OMEPRAZOLE": {
+    "id": "FORM-OMEPRAZOLE",
+    "domain": "formulary",
+    "risk_tier": 1,
+    "version": "1.0.0",
+    "text": "# Omeprazole 20 mg gastro-resistant capsules (OTC)\n\nOmeprazole 20 mg is a listed over-the-counter option for frequent heartburn in adults, taken once daily for up to 14 days. Seek medical advice if symptoms persist beyond 14 days, or if there is difficulty swallowing, black stools, or unexplained weight loss. See [[POLICY-ESCALATION]].",
+    "links": [
+     "POLICY-ESCALATION"
+    ],
+    "kind": "policy_note"
+   },
+   "FORM-ORS": {
+    "id": "FORM-ORS",
+    "domain": "formulary",
+    "risk_tier": 1,
+    "version": "1.0.0",
+    "text": "# Oral rehydration salts (ORS) sachets\n\nOral rehydration salts are a listed over-the-counter option to replace fluid and electrolytes in mild diarrhoea or vomiting. Dissolve one sachet in the volume of clean water stated on the pack and sip frequently. Seek pharmacist or medical advice if diarrhoea lasts more than 2 days, if there is blood in the stool, or for infants and the elderly. See [[SAFETY-PEDIATRIC]], [[POLICY-ESCALATION]].",
+    "links": [
+     "SAFETY-PEDIATRIC",
+     "POLICY-ESCALATION"
+    ],
+    "kind": "policy_note"
+   },
+   "FORM-PARACETAMOL": {
+    "id": "FORM-PARACETAMOL",
+    "domain": "formulary",
+    "risk_tier": 1,
+    "version": "1.0.0",
+    "text": "# Paracetamol (acetaminophen) 500 mg tablets\n\nParacetamol is a listed over-the-counter option for mild to moderate pain such as headache, toothache or muscle ache, and for fever in adults. Usual adult dose is 500 mg to 1000 mg every 4 to 6 hours. The formulary adult maximum is 4 g in 24 hours, and 3 g in 24 hours for adults with liver disease, regular heavy alcohol use or low body weight. Check other products for hidden paracetamol before combining. See [[SAFETY-PREGNANCY]], [[SAFETY-PEDIATRIC]], [[POLICY-ESCALATION]].",
+    "links": [
+     "SAFETY-PREGNANCY",
+     "SAFETY-PEDIATRIC",
+     "POLICY-ESCALATION"
+    ],
+    "kind": "policy_note"
+   },
+   "POLICY-ESCALATION": {
+    "id": "POLICY-ESCALATION",
+    "domain": "policy",
+    "risk_tier": 3,
+    "version": "1.0.0",
+    "text": "# When to escalate to a pharmacist or emergency care\n\nRefer to the pharmacist on duty if symptoms last longer than the label allows, if the person takes other regular medicines, or has kidney, liver, heart or stomach conditions. For chest pain, difficulty breathing, swelling of the face or throat, suspected overdose or thoughts of self-harm, direct the person to emergency services immediately. See [[POLICY-RX-ONLY]].",
+    "links": [
+     "POLICY-RX-ONLY"
+    ],
+    "kind": "policy_note"
+   },
+   "POLICY-RX-ONLY": {
+    "id": "POLICY-RX-ONLY",
+    "domain": "policy",
+    "risk_tier": 3,
+    "version": "1.0.0",
+    "text": "# Prescription-only medicines\n\nThe assistant lists only formulary over-the-counter products. It never recommends, starts, changes or dispenses prescription-only medicines. These require a licensed prescriber and a pharmacist. See [[POLICY-ESCALATION]].",
+    "links": [
+     "POLICY-ESCALATION"
+    ],
+    "kind": "policy_note"
+   },
+   "SAFETY-NSAID-INTERACTIONS": {
+    "id": "SAFETY-NSAID-INTERACTIONS",
+    "domain": "safety",
+    "risk_tier": 2,
+    "version": "1.0.0",
+    "text": "# NSAID combination safety\n\nDo not combine ibuprofen with other NSAIDs such as aspirin for pain or naproxen, because the risk of stomach bleeding and kidney harm increases. People taking anticoagulants, such as warfarin, or on regular aspirin must ask a pharmacist before using ibuprofen. See [[FORM-IBUPROFEN]].",
+    "links": [
+     "FORM-IBUPROFEN"
+    ],
+    "kind": "policy_note"
+   },
+   "SAFETY-PEDIATRIC": {
+    "id": "SAFETY-PEDIATRIC",
+    "domain": "safety",
+    "risk_tier": 2,
+    "version": "1.0.0",
+    "text": "# Children: pharmacist-led dosing\n\nThis assistant does not calculate or suggest medicine doses for children. Pediatric doses depend on age and weight and must be confirmed by a pharmacist or prescriber. Refer to the pharmacist on duty. See [[POLICY-ESCALATION]].",
+    "links": [
+     "POLICY-ESCALATION"
+    ],
+    "kind": "policy_note"
+   },
+   "SAFETY-PREGNANCY": {
+    "id": "SAFETY-PREGNANCY",
+    "domain": "safety",
+    "risk_tier": 2,
+    "version": "1.0.0",
+    "text": "# Pregnancy and breastfeeding\n\nAnyone who is pregnant or breastfeeding must speak to a pharmacist or prescriber before taking any medicine. Paracetamol at the lowest effective dose is commonly considered first choice for pain or fever, while ibuprofen and other NSAIDs are avoided in the third trimester. See [[FORM-PARACETAMOL]], [[FORM-IBUPROFEN]].",
+    "links": [
+     "FORM-PARACETAMOL",
+     "FORM-IBUPROFEN"
+    ],
+    "kind": "policy_note"
+   },
+   "SOP-LOT-QUARANTINE": {
+    "id": "SOP-LOT-QUARANTINE",
+    "domain": "sop",
+    "risk_tier": 3,
+    "version": "1.0.0",
+    "text": "# Batch lot state transitions\n\nChanging the state of a medicine batch lot, for example from AVAILABLE to QUARANTINED, RELEASED or RECALLED, is a TIER_3 action. The assistant can only submit a request, which stays PENDING_APPROVAL until a pharmacist approver in the same tenant approves it. See [[SOP-STORAGE]].",
+    "links": [
+     "SOP-STORAGE"
+    ],
+    "kind": "policy_note"
+   },
+   "SOP-STORAGE": {
+    "id": "SOP-STORAGE",
+    "domain": "sop",
+    "risk_tier": 2,
+    "version": "1.0.0",
+    "text": "# Storage of over-the-counter tablets\n\nStore tablets in the original pack, below 25 degrees Celsius, in a dry place away from direct light and out of reach of children. Do not use after the expiry date on the pack. See [[SOP-LOT-QUARANTINE]].",
+    "links": [
+     "SOP-LOT-QUARANTINE"
+    ],
+    "kind": "policy_note"
+   }
+  },
+  "tenant_pharma_b": {
+   "FORM-ASPIRIN-B": {
+    "id": "FORM-ASPIRIN-B",
+    "domain": "formulary",
+    "risk_tier": 1,
+    "version": "1.0.0",
+    "text": "# Aspirin 300 mg dispersible tablets (site B only)\n\nAt site B, soluble aspirin 300 mg is listed for short-term relief of headache in adults, every 4 to 6 hours with a maximum of 3 g in 24 hours. Never give to children under 16. See [[POLICY-ESCALATION]].",
+    "links": [
+     "POLICY-ESCALATION"
+    ],
+    "kind": "policy_note"
+   },
+   "FORM-PARACETAMOL": {
+    "id": "FORM-PARACETAMOL",
+    "domain": "formulary",
+    "risk_tier": 1,
+    "version": "1.0.0",
+    "text": "# Paracetamol 500 mg tablets (site B policy)\n\nAt site B paracetamol is the listed over-the-counter option for mild pain and fever in adults. Site B policy sets the adult maximum at 3 g in 24 hours. See [[POLICY-ESCALATION]].",
+    "links": [
+     "POLICY-ESCALATION"
+    ],
+    "kind": "policy_note"
+   },
+   "POLICY-ESCALATION": {
+    "id": "POLICY-ESCALATION",
+    "domain": "policy",
+    "risk_tier": 3,
+    "version": "1.0.0",
+    "text": "# Site B escalation\n\nAt site B refer to the pharmacist for any symptom lasting more than 3 days, and send emergency symptoms to emergency services immediately. See [[POLICY-RX-ONLY]].",
+    "links": [
+     "POLICY-RX-ONLY"
+    ],
+    "kind": "policy_note"
+   },
+   "POLICY-RX-ONLY": {
+    "id": "POLICY-RX-ONLY",
+    "domain": "policy",
+    "risk_tier": 3,
+    "version": "1.0.0",
+    "text": "# Site B prescription-only medicines\n\nSite B assistant lists only over-the-counter formulary products and never recommends prescription-only medicines. See [[POLICY-ESCALATION]].",
+    "links": [
+     "POLICY-ESCALATION"
+    ],
+    "kind": "policy_note"
+   }
+  }
+ }
+}

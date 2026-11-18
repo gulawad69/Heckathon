@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Pharma Agent 50K" enabled="true">
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments"><collectionProp name="Arguments.arguments"/></elementProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="50K VUs (5,000 threads x 10 workers)" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController">
+          <boolProp name="LoopController.continue_forever">false</boolProp><intProp name="LoopController.loops">-1</intProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">5000</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">180</stringProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">600</stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /api/v1/agent/query" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments"><collectionProp name="Arguments.arguments">
+            <elementProp name="" elementType="HTTPArgument"><boolProp name="HTTPArgument.always_encode">false</boolProp>
+              <stringProp name="Argument.value">{"tenant_id":"tenant_pharma_a","user_id":"user_${__threadNum}","query":"${query}"}</stringProp><stringProp name="Argument.metadata">=</stringProp></elementProp>
+          </collectionProp></elementProp>
+          <stringProp name="HTTPSampler.domain">${__P(host,localhost)}</stringProp>
+          <stringProp name="HTTPSampler.port">${__P(port,8000)}</stringProp>
+          <stringProp name="HTTPSampler.path">/api/v1/agent/query</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Headers" enabled="true"><collectionProp name="HeaderManager.headers">
+            <elementProp name="" elementType="Header"><stringProp name="Header.name">Content-Type</stringProp><stringProp name="Header.value">application/json</stringProp></elementProp>
+            <elementProp name="" elementType="Header"><stringProp name="Header.name">X-Tenant-ID</stringProp><stringProp name="Header.value">tenant_pharma_a</stringProp></elementProp>
+          </collectionProp></HeaderManager><hashTree/>
+          <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Varied queries" enabled="true">
+            <stringProp name="filename">queries.csv</stringProp><stringProp name="variableNames">query</stringProp><boolProp name="recycle">true</boolProp><stringProp name="delimiter">|</stringProp>
+          </CSVDataSet><hashTree/>
+          <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Duration Assertion (600 ms)" enabled="true"><stringProp name="DurationAssertion.duration">600</stringProp></DurationAssertion><hashTree/>
+          <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSONPath faithfulness >= 0.92 (non-null answers)" enabled="true">
+            <stringProp name="JSON_PATH">$[?(@.status=='ANSWERED')].faithfulness</stringProp><stringProp name="EXPECTED_VALUE"></stringProp><boolProp name="JSONVALIDATION">false</boolProp><boolProp name="ISREGEX">false</boolProp>
+          </JSONPathAssertion><hashTree/>
+          <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="tenant_id echoed (no cross-tenant leak)" enabled="true">
+            <stringProp name="JSON_PATH">$.tenant_id</stringProp><stringProp name="EXPECTED_VALUE">tenant_pharma_a</stringProp><boolProp name="JSONVALIDATION">true</boolProp>
+          </JSONPathAssertion><hashTree/>
+          <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="Constant Throughput Timer (floor 8,500 RPS = 51,000/min total, 5,100/min per worker)" enabled="true">
+            <stringProp name="throughput">5100</stringProp><intProp name="calcMode">0</intProp>
+          </ConstantThroughputTimer><hashTree/>
+          <BackendListener guiclass="BackendListenerGui" testclass="BackendListener" testname="Backend Listener (Prometheus/InfluxDB)" enabled="true">
+            <stringProp name="classname">org.apache.jmeter.visualizers.backend.influxdb.InfluxdbBackendListenerClient</stringProp>
+          </BackendListener><hashTree/>
+        </hashTree>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
